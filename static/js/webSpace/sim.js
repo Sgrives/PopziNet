@@ -46,9 +46,7 @@ config = {
     "showDebugID": 4,                       // Which ID in the array we should show the debug information for
     "countdown": false,                     // Should there be a countdown before simulation begins? Useful for seeing initial planet positions
     "countdownTimer": 3,                    // How long from placing the planets should we wait before simulating, in seconds.
-    // Other shit, I cba with all this fucking spawning of things and initialization, ugh.
-    // Why the fuck can't we simply fucking print shit as it happends? What a stupid fucking design flaw.
-    // I'm not setting 10,000 breakpoints and fucking about with page refreshing for 2 weeks thanks.
+    // Updates for javascript being sucky
     "canvasResizing": false,                // If the canvas is currently being resized, dont bother spawning a new one
     "aliveUI": false,                       // is the ui already running?
 };
@@ -64,7 +62,7 @@ function init() {
     canvas = null;          // Populated when page ready by init()
     ctx = null;             // Populated when page ready by init()
     sliderSimSpeed = null;  // Populated when page ready by init() - Changes the config.simSpeed (aka, dt)
-    drawLinesArr = [];    // Populated with draw line vectors
+    drawLinesArr = [];      // Populated with draw line vectors
     drawLinesNth = 0;       // Counts up in drawLines(); and resets every config.drawLinesNth
     planets = null;         // Gets populated on init
 
