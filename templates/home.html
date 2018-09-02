@@ -1,0 +1,268 @@
+﻿<!DOCTYPE HTML>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title>WebSpace</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+
+    <!-- Bootstrap to make our lives easier -->
+    <script src="/static/js/jquery/jquery-3.2.1.slim.min.js"></script>
+    <script src="/static/js/popper/popper.1.12.9.min.js"></script>
+    <link rel="stylesheet" href="/static/css/bootstrap/bootstrap.min.css">
+    <script src="/static/js/bootstrap/bootstrap.bundle.min.js"></script>
+
+    <!-- Perfect Scrollbar -->
+    <script src="/static/js/perfectScrollbar/perfect-scrollbar.js"></script>
+    <link rel="stylesheet" href="/static/js/perfectScrollbar/perfect-scrollbar.css" />
+
+    <!-- My Space Sim! -->
+    <script src="/static/js/webSpace/sim.js"></script>
+    <script src="/static/js/webSpace/planet.js"></script>
+    <script src="/static/js/webSpace/vector.js"></script>
+    <script src="/static/js/webSpace/ui.js"></script>
+    <script src="/static/js/webSpace/presets.js"></script>
+</head>
+
+<body style="background: #333;">
+
+    <div id="menu" class="sidenav text-white" style="display: block;">
+        <div id="fadebox" class="fadeable">
+            <div class="sna">
+                <a href="javascript:void(0)" class="closebtn pt-3" onclick="ui.closeNav()">&times;</a>
+                <a href="javascript:void(0)" class="sntitle pt-3" onclick="ui.closeNav()">Advanced Menu</a>
+            </div>
+
+
+            <form name="controls" class="mb-5">
+                <hr /> <!-- Simulation -->
+
+                <small>Use Set Simulation Duration</small>
+                <div class="pl-1 pr-1">
+                    <select class="form-control p-0 bg-dark border-dark text-white" style="height: 35px;" id="simUseLength">
+                        <option value="true">True</option>
+                        <option value="false" selected="selected">False</option>
+                    </select>
+                </div>
+
+                <small>Simulation Duration</small>
+                <div class="pl-1 pr-1">
+                    <input id="simLength" class="form-control bg-dark border-dark text-white" type="number" step="0.01" placeholder="30,000 (Default)" max="999999" style="height:35px;">
+                </div>
+
+                <small>Countdown Before Sim</small>
+                <div class="pl-1 pr-1">
+                    <select class="form-control p-0 bg-dark border-dark text-white" style="height: 35px;" id="countdown">
+                        <option value="true">True</option>
+                        <option value="false" selected="selected">False</option>
+                    </select>
+                </div>
+
+                <small>Countdown Duration(s)</small>
+                <div class="pl-1 pr-1">
+                    <input id="countdownTimer" class="form-control bg-dark border-dark text-white" type="number" placeholder="3 (Default)" max="999999" style="height:35px;">
+                </div>
+
+                <small>Mass (kg) Division</small>
+                <div class="pl-1 pr-1">
+                    <input id="kgScaleMass" class="form-control bg-dark border-dark text-white" type="number" placeholder="10*10**12 (Default)" style="height:35px;">
+                </div>
+
+                <small>Gravity Power (6.674*10**this)</small>
+                <div class="pl-1 pr-1">
+                    <input id="gravityPower" class="form-control bg-dark border-dark text-white" type="number" placeholder="11" max="999999" style="height:35px;">
+                </div>
+
+                <small>Orbit Direction</small>
+                <div class="pl-1 pr-1">
+                    <select class="form-control p-0 bg-dark border-dark text-white" style="height: 35px;" id="simFlipOrbit">
+                        <option value="false" selected="selected">Clockwise / Bottom</option>
+                        <option value="true">Anti Clockwise / Top</option>
+                    </select>
+                </div>
+
+                <hr /> <!-- Canvas / Lables -->
+
+                <small>Canvas Offset X</small>
+                <input type="range" min="0" max="1000" value="500" class="slider" id="canvasOffsetX">
+
+                <small>Canvas Offset Y</small>
+                <input type="range" min="0" max="1000" value="450" class="slider" id="canvasOffsetY">
+
+                <small>Labels Offset X</small>
+                <input type="range" min="0" max="1000" value="500" class="slider" id="labelOffsetX">
+
+                <small>Labels Offset Y</small>
+                <input type="range" min="0" max="1000" value="500" class="slider" id="labelOffsetY">
+
+                <hr /> <!-- Trails -->
+
+                <small>Trail Type</small>
+                <div class="pl-1 pr-1">
+                    <select class="form-control p-0 bg-dark border-dark text-white" style="height: 35px;" id="trailType">
+                        <option value="1">Orbital</option>
+                        <option value="2" selected="selected">Flying </option>
+                        <option value="3">Void / Flare</option>
+                    </select>
+                </div>
+
+                <small>Trail Strength</small>
+                <input type="range" min="0" max="1000" value="495" class="slider" id="trailTypePower">
+
+                <small>Trail Length</small>
+                <div class="pl-1 pr-1">
+                    <input id="trailLength" class="form-control bg-dark border-dark text-white" type="number" placeholder="100 (Default)" max="999999" style="height:35px;">
+                </div>
+
+                <hr /> <!-- Draw Lines -->
+
+                <small>Max amount of drawing lines</small>
+                <div class="pl-1 pr-1">
+                    <input id="drawLinesMax" class="form-control bg-dark border-dark text-white" type="number" placeholder="2,000 (Default)" max="999999" style="height:30px;">
+                </div>
+
+                <small>Draw line every Nth frame</small>
+                <div class="pl-1 pr-1">
+                    <input id="drawLinesNth" class="form-control bg-dark border-dark text-white" type="number" step="0.01" placeholder="0.2 (Default)" max="999999" style="height:35px;">
+                </div>
+
+                <small>Fade lines over total lines</small>
+                <div class="pl-1 pr-1">
+                    <select class="form-control p-0 bg-dark border-dark text-white" style="height: 35px;" id="drawLinesFOT">
+                        <option value="true" selected="selected">True</option>
+                        <option value="false">False</option>
+                    </select>
+                </div>
+
+                <small>Line Color (rgba)</small>
+                <div class="pl-1 pr-1">
+                    <div class="row no-gutters">
+                        <div class="col-sm-10 pr-2">
+                            <input id="drawLinesRGBA" class="form-control bg-dark border-dark text-white" type="text" placeholder="255, 255, 0, 0.1" max="999999" style="height:35px;">
+                        </div>
+                        <div class="col-sm">
+                            <div id="drawLinesPreview" class="w-100 h-100 rounded" style="background: rgba(255, 255, 0, 0.1);"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr /> <!-- Background Color -->
+
+                <small>Background Color (rgba)</small>
+                <div class="pl-1 pr-1">
+                    <div class="row no-gutters">
+                        <div class="col-sm-10 pr-2">
+                            <input id="bgColor" class="form-control bg-dark border-dark text-white" type="text" placeholder="51, 51, 51, 1" max="999999" style="height:35px;">
+                        </div>
+                        <div class="col-sm">
+                            <div id="bgColorPointlessPreview" class="w-100 h-100 rounded" style="background: rgba(51, 51, 51, 1);"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr /> <!-- Custom Data -->
+
+                <small>Custom Planet Data (Feel free to edit!)</small>
+                <div class="pl-1 pr-1">
+                    <textarea id="customPlanets" class="form-control text-sm neatscroll bg-dark border-dark text-white" rows="6"></textarea>
+                </div>
+                <!--<small><a href="#" class="text-muted float-right pr-1">How I got this data</a></small> -->
+                <br />
+
+                <hr /> <!-- About -->
+                <p class="w-100 text-center"><a href="#" onclick="ui.closeNav(); ui.openMsg();" class="text-white w-100 text-center mb-5">Why I made this...</a></p>
+
+            </form>
+        </div>
+    </div>
+
+    <div id="main" style="transition: all 0.5s; position: absolute; z-index: 99; height: 100%; width: 100%;">
+
+        <span class="ml-3 mt-2 pr-5 pb-5" style="font-size:30px; cursor:pointer; color:white; position:absolute; z-index: 100;" onclick="ui.openNav()">&#9776;</span>
+        <canvas id="canvas" style="position: absolute; z-index: 99;">1997 is calling, they would like their browser back. Please upgrade your browser to one made has benn made in the last 10 years, as yours does not support canvas.</canvas>
+
+        <div class="container h-100" style="position: relative;">
+            <div id="controlbox" class="bg p-2 rounded w-100 text-white" style="position: absolute; bottom: 10px; z-index: 100;">
+                <form name="bigcontrols">
+                    <div style="width:100%;">
+                        <small>Speed (dt) Currently: <span id="fbSpeed"></span></small>
+                        <input type="range" min="1" max="2000" value="300" class="slider" id="dt">
+                    </div>
+                    <div>
+                        <button class="btn bg-dark border-dark text-white mb-2" onclick="updateConfig('simPause')">Pause</button>
+                        <button class="btn bg-dark border-dark text-white mb-2" onclick="updateConfig('labels')">Toggle Labels</button>
+                        <button class="btn bg-dark border-dark text-white mb-2" onclick="updateConfig('advLabels')">Toggle Advanced Labels</button>
+                        <button class="btn bg-dark border-dark text-white mb-2" onclick="updateConfig('drawVelocities')">Toggle Velocities</button>
+                        <button class="btn bg-dark border-dark text-white mb-2" onclick="updateConfig('showDebug')">Toggle Debug</button>
+                        <button class="btn bg-dark border-dark text-white mb-2" onclick="updateConfig('centerDot')">Toggle Center</button>
+                        <button class="btn bg-dark border-dark text-white mb-2" onclick="updateConfig('trails')">Toggle Trails</button>
+                        <br style="margin-bottom: 5px;" />
+
+                        <div class="row">
+                            <div class="col form-inline">
+                                <select id="drawLinesFrom" class="form-control p-0 mr-1 bg-dark border-dark text-white">
+                                    <option selected="selected" value="null">-- Draw Lines From --</option>
+                                </select>
+                                <select id="drawLinesTo" class="form-control p-0 mr-1 bg-dark border-dark text-white">
+                                    <option selected="selected" value="null">-- Draw Lines To --</option>
+                                </select>
+                                <button class="btn bg-dark border-dark mr-1 text-white" onclick="drawLinesArr = [];">Clear Lines</button>
+                                <select id="systemPreset" class="form-control p-0 mr-1 bg-dark border-dark text-white">
+                                    <option selected="selected" value="0">-- Solar System Presets --</option>
+                                    <option value="0">Solar System</option>
+                                    <option value="1">Jupiter & Moons</option>
+                                    <option value="2">Saturn & Moons</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:100%;">
+                        <small>Zoom</small>
+                        <input type="range" min="1" max="2000" value="1000" class="slider" id="zoom">
+                    </div>
+                    <small style="right: -190px; bottom: -3px; position: absolute; color: #777">Made by Popzi over a weekend</small>
+                </form>
+            </div>
+        </div>
+
+        <p id="debugWindow" class="bg p-1 text-white rounded m-0" style="position: absolute; bottom: 10px; left: 20px; min-width: 250px;">Debug</p>
+        <small style="right: 10px; bottom: 8px; position: absolute; color: #777">&copy; 2018</small>
+
+        <div id="msg" class="fadeable w-100 h-100 p-5 text-white" style="position: absolute; top:0; left: 0; z-index: 101; display: none;">
+            <div class="rounded w-100 h-100 p-5" style="background: rgb(31,31,31); position: relative;">
+                <a href="javascript:void(0)" class="closebtn pt-0 text-right" style="position: absolute; top: 0; right: 40px; font-size: 48pt; color: white; padding-left: 40px; padding-bottom: 40px;" onclick="ui.closeMsg()">&times;</a>
+                <h1>I was bored.</h1>
+                <p>
+                    And I wanted to learn javascript too, I guess...
+                    <br /><br /><br/><br/>
+                    The most advanced thing I'd ever done with javascript, up until this point, was have it make a button show something.
+                    <br />
+                    Other than that, pretty much never had to use it.
+                    <br /><br />
+                    I do have a Python background doing websites at work, so that's kind of useful I guess, though the websites I make use pretty much no javascript.
+                    <br /><br />
+                    And uhh, yea, I like space aswell. So I thought I'd not only learn how to work with javascript, but I'd also become a qualified astrophysicist overnight too. So that was fun... (I'm now bald.)
+                    <br/><br/>
+                    Just normal stuff that 20 year old guys get up to when they're bored over the weekend...
+                </p>
+                <center>
+                    <div style="position:absolute;  bottom: 20px; left: 0; right: 0; margin-left: auto; margin-right: auto; opacity: 0.1;">
+                        <img class="rounded" src="https://static.independent.co.uk/s3fs-public/styles/article_small/public/thumbnails/image/2017/07/11/11/harold-0.jpg" />
+                        <p>Cheers.</p>
+                    </div>
+                </center>
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript">
+    window.onload = init();
+    window.onload = new PerfectScrollbar('#customPlanets');
+    window.onload = new PerfectScrollbar('#menu');
+    window.onload = document.controls.reset(); // Resets all the forms to their initial state insted of from cache
+    window.onload = document.bigcontrols.reset(); // Resets all the forms to their initial state insted of from cache
+</script>
+ 
+</body>
+</html>
